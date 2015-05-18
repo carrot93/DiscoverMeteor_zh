@@ -3,17 +3,20 @@ title: 开始
 slug: getting-started
 date: 0002/01/01
 number: 2
-contents: 安装 Meteor 和 Meteorite|学习 Meteor 包的五种类型|建立 Meteor 应用的文件结构
+points: 1
+contents: 安装 Meteor|学习 Meteor 包的五种类型|建立 Meteor 应用的文件结构
 paragraphs: 49
 ---
 
 第一印象十分重要，安装 Meteor 并不会遇到什么困难。大多数情况下，在五分钟内便可以完成。
 
-首先，我们从 http://meteor.com 网站上安装 Meteor：
+首先，如果在 Mac OS 或 Linux 系统下，你可以打开终端窗口，输入以下命令来安装 Meteor：
 
 ~~~bash
 $ curl https://install.meteor.com | sh
 ~~~
+
+如果你使用 Windows 系统，请参考 Meteor 网站的 [安装指导](https://www.meteor.com/install)。
 
 以上命令会在系统中安装 `meteor` 可执行文件，然后就可以使用 Meteor 了。
 
@@ -25,70 +28,25 @@ $ curl https://install.meteor.com | sh
 
 使用 Nitrous.io 可以让你在览器中直接编辑代码并运行程序。我们撰写了[一篇简短的指南](https://www.discovermeteor.com/blog/meteor-nitrous/)，介绍如何使用 Nitrous.io。
 
-你可以一直阅读那篇指南直到“Installing Meteor & Meteorite”部分，然后再回到本章，从“创建简单的应用”一节开始阅读。
-
-<% end %>
-
-### Meteorite
-
-默认情况下，Meteor 暂时不支持第三方代码包（package），为了解决这个问题，Tom Coleman（本书作者之一）和其他一些社区成员开发了 [Meteorite](http://oortcloud.github.io/meteorite/)。Meteorite 包装了 Meteor，可以用来安装 Meteor 并安装和关联其它第三方代码包。
-
-因为我们需要为 Microscope 引入一些第三方代码包的功能，所以现在让我们来一起安装 Meteorite。
-
-### 安装 Meteorite
-
-安装 Meteorite 之前，请确保系统中安装了 Node 和 git。请针对各操作系统的标准进行安装，或参照下面的链接：
-
-- [Node 下载地址](http://nodejs.org/download/)
-- [Git 下载地址](http://git-scm.com/downloads)
-
-然后再安装 Meteorite。Meteorite 是个 [npm](https://npmjs.org/)（Node Package Module，Node 模块的标准格式）可执行文件，可以使用下面的命令安装：
-
-~~~bash
-$ npm install -g meteorite
-~~~
-
-<% note do %>
-
-### 权限出错？
-
-在某些系统上，安装 Meteorite 可能需要 root 权限。为了避免出现问题，请使用 `sudo -H`：
-
-~~~bash
-$ sudo -H npm install -g meteorite
-~~~
-
-关于权限问题的详细说明请参阅 [Meteorite 的文档](https://github.com/oortcloud/meteorite/blob/master/README.md#permission-woes)。
-
-<% end %>
-
-就这么简单！从现在开始一切都交给 Meteorite 处理了。
-
-注意：Meteorite 目前暂不支持 Windows 系统，你可以阅读[这篇教程](https://www.discovermeteor.com/blog/using-meteor-and-atmopshere-on-windows/)来寻找解决办法。
-
-<% note do %>
-
-### `mrt` vs `meteor`
-
-安装 Meteorite 的同时会安装 `mrt` 可执行文件，我们将用它为应用程序安装新的代码包。当你想要启动服务器，则会使用到 `meteor`。
+你可以一直阅读那篇指南直到“Installing Meteor”部分，然后再回到本章，从“创建简单的应用”一节开始阅读。
 
 <% end %>
 
 ### 创建简单的应用
 
-安装好 Meteorite 之后，我们来创建一个应用。创建应用要使用 Meteorite 的命令行工具 `mrt`：
+安装好 Meteor 之后，我们来创建一个应用。创建应用要使用 Meteor 的命令行工具 `meteor`：
 
 ~~~bash
-$ mrt create microscope
+$ meteor create microscope
 ~~~
 
 上述命令会下载 Meteor，然后新建一个基本可用的 Meteor 项目。命令执行完成后，会看到新建了一个文件夹，名为 `microscope/`，包含以下文件：
 
 ~~~bash
+.meteor
 microscope.css
 microscope.html
 microscope.js
-smart.json
 ~~~
 
 Meteor 生成的应用只是一个简单的骨架，演示一些简单的模式。
@@ -108,15 +66,42 @@ $ meteor
 
 恭喜！你的第一个 Meteor 应用顺利运行了。顺便说一下，如果想停止运行程序，只要切换到对应的终端窗口按 `ctrl+c` 键即可。
 
+如果你使用 Git，正是时候用 `git init` 来初始化你的项目仓库。
+
+<% note do %>
+
+### 再见 Meteorite
+
+曾经有段时间，Meteor 依赖于外部代码包管理器 Meteorite。自从 Meteor 0.9.0 版本以后，就不再需要 Meteorite 了，因为它的功能已经融入 Meteor 之中。
+
+所以，如果你在这本书或在浏览 Meteor 相关的资料时，遇到 Meteorite 的 `mrt` 命令行工具，你可以放心地用 `meteor` 来替换它。
+
+<% end %>
+
 ### 添加代码包
 
-下面我们使用 Meteorite 添加一个智能代码包，在项目中引入 [Bootstrap](http://getbootstrap.com/)：
+下面我们使用 Meteor 的 package 系统在项目中引入 [Bootstrap](http://getbootstrap.com/) 框架。
+
+这与通常手动添加 Bootstrap 的 CSS 和 Javascript 文件的方法是没有区别的，只不过我们依赖代码包维护者来为我们更新这些文件。
+
+既然我们说到此，我们也来添加 [Underscore](http://underscorejs.org/) 代码包。 Underscore 是一个 JavaScript 工具库，对于操纵 JavaScript 数据结构非常有用。
+
+截至写这本书时，`underscore` 代码包依然算作 Meteor “官方”的代码包，所以这个包没有作者：
 
 ~~~bash
-$ mrt add bootstrap
+meteor add twbs:bootstrap
+meteor add underscore
 ~~~
 
-<%= commit "2-2", "添加 bootstrap 代码包" %>
+注意的是现在我们添加了 Bootstrap **3**。而这本书中的一些截图是老版本的 Microscope 使用 Bootstrap **2** 时截取的，所有它们看起来会有稍微不同。
+
+<%= commit "2-2", "添加 bootstrap 和 underscore 代码包" %>
+
+一旦你添加了 Bootstrap 代码包，你应会注意到我们应用的变化：
+
+<%= screenshot "2-1b", "添加了 Bootstrap." %>
+
+与“传统”方式添加外部资源不同，我们还没有链接任何 CSS 或 JavaScript 文件，因为 Meteor 已经帮我们搞定了！这就是 Meteor 代码包的众多优势之一。
 
 <% note do %>
 
@@ -125,9 +110,9 @@ $ mrt add bootstrap
 Meteor 中的代码包有点特殊，分为五种：
 
 - Meteor 核心代码本身分成多个**核心代码包**（core package），每个 Meteor 应用中都包含，你基本上不需要花费精力来维护它们
-- Meteor **智能代码包**（smart package）大约有 [37 个](http://docs.meteor.com/#packages)（可以执行 `meteor list` 来查看完整列表），是 Meteor 自带的，可以有选择的引入应用。不用 Meteorite 就可以引入智能代码包，执行 `meteor add packagename` 即可
-- **本地代码包**（local package）是自己开发的代码包，保存在 `/packages` 文件夹中。同样，不使用 Meteorite 也可以引入本地代码包
-- **Atmosphere 智能代码包**（Atmosphere smart package）是 [Atmosphere](https://atmosphere.meteor.com/) 网站中列出的第三方代码包。你必须使用 Meteorite 才可以引入这些代码包
+- 常规 Meteor 代码包称为“**isopack**”，或同构代码包（isomorphic package，意味着它们既能在客户端也能在服务器端工作）。**第一类代码包**例如 `accounts-ui` 或 `appcache` 由 Meteor 核心团队维护，与 Meteor [捆绑](http://docs.meteor.com/#packages)在一起。
+- **第三方代码包**就是其他用户开发的 isopack 上传到 Meteor 的代码包服务器上。你可以访问 [Atmosphere](http://atmosphere.meteor.com) 或 `meteor search` 命令来浏览这些代码包。
+- **本地代码包**（local package）是自己开发的代码包，保存在 `/packages` 文件夹中。
 - **NPM 代码包**（NPM package）是 Node.js 的代码包，虽不能直接用于 Meteor，但可以在上述几种代码包中使用
 
 <% end %>
@@ -136,16 +121,20 @@ Meteor 中的代码包有点特殊，分为五种：
 
 开始编写代码之前，我们必须要正确的设置项目。为了保证项目整洁，请打开 `microscope` 文件夹，删除 `microscope.html`、`microscope.js` 和 `microscope.css`。
 
-请在 `microscope` 文件夹中新建五个子文件夹：`/client`，`/server`，`/public`，`/lib` 和 `/collections`。然后在 `/client` 文件夹中新建两个空文件：`main.html` 和 `main.js`。如果程序无法运行了先别担心，从下一章开始我们会编写代码。
+请在 `microscope` 文件夹中新建四个子文件夹：`/client`，`/server`，`/public` 和 `/lib`。然后在 `/client` 文件夹中新建两个空文件：`main.html` 和 `main.js`。如果程序无法运行了先别担心，从下一章开始我们会编写代码。
 
 值得一提的是，上述文件夹中有一些拥有特别的作用。关于文件， Meteor 有以下几条规则：
 
 - 在 `/server` 文件夹中的代码只会在服务器端运行。
 - 在 `/client` 文件夹中的代码只会在客户端运行。
 - 其它代码则将同时运行于服务器端和客户端上。
+- 请将所有的静态文件（字体，图片等）放置在 `/public` 文件夹中。
+
+知道 Meteor 以什么顺序加载文件也很有用：
+
 - 在 `/lib` 文件夹中的文件将被优先载入。
 - 所有以 `main.*` 命名的文件将在其他文件载入后载入。
-- 请将所有的静态文件（字体，图片等）放置在 `/public` 文件夹中。
+- 其他文件以文件名的字母顺序载入。
 
 需要注意的是，即便 Meteor 包含上述规则，这并不意味着它强制你为你的 Meteor 应用采用任何预设的文件结构。上述结构只是我们的建议，并不是一成不变的。
 
@@ -187,110 +176,176 @@ CSS 文件将被 Meteor 自动加载并简化。因此，不同于其它的静�
 
 ~~~css
 .grid-block, .main, .post, .comments li, .comment-form {
-    background: #fff;
-    border-radius: 3px;
-    padding: 10px;
-    margin-bottom: 10px;
-    box-shadow: 0 1px 1px rgba(0, 0, 0, 0.15);
-}
+  background: #fff;
+  border-radius: 3px;
+  padding: 10px;
+  margin-bottom: 10px;
+  -webkit-box-shadow: 0 1px 1px rgba(0, 0, 0, 0.15);
+  -moz-box-shadow: 0 1px 1px rgba(0, 0, 0, 0.15);
+  box-shadow: 0 1px 1px rgba(0, 0, 0, 0.15); }
+
 body {
-    background: #eee;
-    color: #666666;
+  background: #eee;
+  color: #666666; }
+
+#main {
+  position: relative;
 }
-.navbar { margin-bottom: 10px }
-.navbar .navbar-inner {
-    border-radius: 0px 0px 3px 3px;
+.page {
+  position: absolute;
+  top: 0px;
+  width: 100%;
 }
-#spinner { height: 300px }
+
+.navbar {
+  margin-bottom: 10px; }
+  /* line 32, ../sass/style.scss */
+  .navbar .navbar-inner {
+    border-radius: 0px 0px 3px 3px; }
+
+#spinner {
+  height: 300px; }
+
 .post {
-    *zoom: 1;
+  /* For modern browsers */
+  /* For IE 6/7 (trigger hasLayout) */
+  *zoom: 1;
+  position: relative;
+  opacity: 1; }
+  .post:before, .post:after {
+    content: "";
+    display: table; }
+  .post:after {
+    clear: both; }
+  .post.invisible {
+    opacity: 0; }
+  .post.instant {
+    -webkit-transition: none;
+    -moz-transition: none;
+    -o-transition: none;
+    transition: none; }
+  .post.animate{
     -webkit-transition: all 300ms 0ms;
-    -webkit-transition-delay: ease-in;
     -moz-transition: all 300ms 0ms ease-in;
     -o-transition: all 300ms 0ms ease-in;
-    transition: all 300ms 0ms ease-in;
-    position: relative;
-    opacity: 1;
-}
-.post:before, .post:after {
-    content: "";
-    display: table;
-}
-.post:after { clear: both }
-.post.invisible { opacity: 0 }
-.post .upvote {
+    transition: all 300ms 0ms ease-in; }
+  .post .upvote {
     display: block;
     margin: 7px 12px 0 0;
-    float: left;
-}
-.post .post-content { float: left }
-.post .post-content h3 {
-    margin: 0;
-    line-height: 1.4;
-    font-size: 18px;
-}
-.post .post-content h3 a {
-    display: inline-block;
-    margin-right: 5px;
-}
-.post .post-content h3 span {
-    font-weight: normal;
-    font-size: 14px;
-    display: inline-block;
-    color: #aaaaaa;
-}
-.post .post-content p { margin: 0 }
-.post .discuss {
+    float: left; }
+  .post .post-content {
+    float: left; }
+    .post .post-content h3 {
+      margin: 0;
+      line-height: 1.4;
+      font-size: 18px; }
+      .post .post-content h3 a {
+        display: inline-block;
+        margin-right: 5px; }
+      .post .post-content h3 span {
+        font-weight: normal;
+        font-size: 14px;
+        display: inline-block;
+        color: #aaaaaa; }
+    .post .post-content p {
+      margin: 0; }
+  .post .discuss {
     display: block;
     float: right;
-    margin-top: 7px;
-}
+    margin-top: 7px; }
+
 .comments {
-    list-style-type: none;
-    margin: 0;
-}
-.comments li h4 {
+  list-style-type: none;
+  margin: 0; }
+  .comments li h4 {
     font-size: 16px;
-    margin: 0;
-}
-.comments li h4 .date {
-    font-size: 12px;
-    font-weight: normal;
-}
-.comments li h4 a { font-size: 12px }
-.comments li p:last-child { margin-bottom: 0 }
+    margin: 0; }
+    .comments li h4 .date {
+      font-size: 12px;
+      font-weight: normal; }
+    .comments li h4 a {
+      font-size: 12px; }
+  .comments li p:last-child {
+    margin-bottom: 0; }
+
 .dropdown-menu span {
-    display: block;
-    padding: 3px 20px;
-    clear: both;
-    line-height: 20px;
-    color: #bbb;
-    white-space: nowrap;
-}
+  display: block;
+  padding: 3px 20px;
+  clear: both;
+  line-height: 20px;
+  color: #bbb;
+  white-space: nowrap; }
+
 .load-more {
-    display: block;
-    border-radius: 3px;
-    background: rgba(0, 0, 0, 0.05);
-    text-align: center;
-    height: 60px;
-    line-height: 60px;
-    margin-bottom: 10px;
-}
-.load-more:hover {
+  display: block;
+  border-radius: 3px;
+  background: rgba(0, 0, 0, 0.05);
+  text-align: center;
+  height: 60px;
+  line-height: 60px;
+  margin-bottom: 10px; }
+  .load-more:hover {
     text-decoration: none;
-    background: rgba(0, 0, 0, 0.1);
+    background: rgba(0, 0, 0, 0.1); }
+
+.posts .spinner-container{
+  position: relative;
+  height: 100px;
+}
+
+.jumbotron{
+  text-align: center;
+}
+.jumbotron h2{
+  font-size: 60px;
+  font-weight: 100;
+}
+
+@-webkit-keyframes fadeOut {
+  0% {opacity: 0;}
+  10% {opacity: 1;}
+  90% {opacity: 1;}
+  100% {opacity: 0;}
+}
+
+@keyframes fadeOut {
+  0% {opacity: 0;}
+  10% {opacity: 1;}
+  90% {opacity: 1;}
+  100% {opacity: 0;}
+}
+
+.errors{
+  position: fixed;
+  z-index: 10000;
+  padding: 10px;
+  top: 0px;
+  left: 0px;
+  right: 0px;
+  bottom: 0px;
+  pointer-events: none;
+}
+.alert {
+          animation: fadeOut 2700ms ease-in 0s 1 forwards;
+  -webkit-animation: fadeOut 2700ms ease-in 0s 1 forwards;
+     -moz-animation: fadeOut 2700ms ease-in 0s 1 forwards;
+  width: 250px;
+  float: right;
+  clear: both;
+  margin-bottom: 5px;
+  pointer-events: auto;
 }
 ~~~
 <%= caption "client/stylesheets/style.css" %>
 
-<%= commit "2-3","Re-arranged file structure." %>
+<%= commit "2-3","重新整理文件结构" %>
 
 <% note do %>
 
-### CoffeeScript 小贴士
+### CoffeeScript 说明
 
-在本书中我们将使用原版 JavaScript 。但是如果你更倾向于使用 CoffeeScript ， Meteor 可以帮助你做到这点。你只需添加 CoffeeScript 代码包，之后便可以在项目中使用 CoffeeScript 了！
+在本书中我们将使用纯 JavaScript。但是如果你更倾向于使用 CoffeeScript，Meteor 可以帮助你做到这点。你只需添加 CoffeeScript 代码包，之后便可以在项目中使用 CoffeeScript 了！
 
-`mrt add coffeescript`
+`meteor add coffeescript`
 
 <% end %>
